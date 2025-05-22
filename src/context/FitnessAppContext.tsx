@@ -61,8 +61,15 @@ export const FitnessAppProvider: React.FC<{ children: ReactNode }> = ({ children
   // Calculate BMI
   const calculateBMI = () => {
     if (userData.weight && userData.height) {
-      const weightInKg = typeof userData.weight === 'number' ? userData.weight : parseFloat(userData.weight.toString());
-      const heightInM = typeof userData.height === 'number' ? userData.height / 100 : parseFloat(userData.height.toString()) / 100;
+      const weightInKg =
+  typeof userData.weight === 'number'
+    ? userData.weight
+    : parseFloat((userData.weight as string).toString());
+
+      const heightInM =
+  typeof userData.height === 'number'
+    ? userData.height / 100
+    : parseFloat((userData.height as string).toString()) / 100;
       const bmi = Number((weightInKg / (heightInM * heightInM)).toFixed(1));
       updateUserData({ bmi });
     }

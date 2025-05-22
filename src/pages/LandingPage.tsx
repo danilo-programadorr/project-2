@@ -46,30 +46,37 @@ const LandingPage = () => {
   };
 
   const handleAuthSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setAuthError('');
+  e.preventDefault();
+  setAuthError('');
 
-    try {
-      if (!formData.email || !formData.password) {
-        setAuthError('Please fill in all required fields.');
-        return;
-      }
-
-      if (showAuthModal === 'register') {
-        if (!formData.fullName) {
-          setAuthError('Please enter your full name.');
-          return;
-        }
-        await signUp(formData.email, formData.password, formData.fullName);
-        setAuthError('Registration successful! Please check your email to confirm your account.');
-      } else {
-        await signIn(formData.email, formData.password);
-        navigate('/dashboard');
-      }
-    } catch (error) {
-      setAuthError(error instanceof Error ? error.message : 'An error occurred');
+  try {
+    // Validação adicional
+    if (!formData.email.includes('@') || !formData.email.includes('.')) {
+      setAuthError('Please enter a valid email address.');
+      return;
     }
-  };
+
+    if (formData.password.length < 6) {
+      setAuthError('Password must be at least 6 characters.');
+      return;
+    }
+
+    if (showAuthModal === 'register') {
+      await signUp(formData.email, formData.password, formData.fullName);
+      setAuthError('Registration successful! Please check your email to confirm your account.');
+      // Limpa o formulário após sucesso
+      setFormData({ fullName: '', email: '', password: '' });
+      // Fecha o modal após 2 segundos
+      setTimeout(() => setShowAuthModal(null), 2000);
+    } else {
+      await signIn(formData.email, formData.password);
+      navigate('/dashboard');
+    }
+  } catch (error) {
+    console.error('Auth error:', error);
+    setAuthError(error instanceof Error ? error.message : 'An error occurred during authentication');
+  }
+};
 
   const features = [
     {

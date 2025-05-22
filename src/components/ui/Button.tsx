@@ -1,20 +1,22 @@
 import React from 'react';
+import { ReactNode } from 'react';
 
 interface ButtonProps {
   children: React.ReactNode;
-  type?: 'button' | 'submit' | 'reset';
+  type?: 'Button' | 'submit' | 'reset';
   variant?: 'primary' | 'secondary' | 'outline' | 'danger';
   size?: 'sm' | 'md' | 'lg';
   fullWidth?: boolean;
   disabled?: boolean;
   loading?: boolean;
   onClick?: () => void;
+  icon?: ReactNode;
   className?: string;
 }
 
 const Button: React.FC<ButtonProps> = ({
   children,
-  type = 'button',
+  type = 'Button',
   variant = 'primary',
   size = 'md',
   fullWidth = false,
@@ -42,7 +44,7 @@ const Button: React.FC<ButtonProps> = ({
   const disabledStyle = disabled ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer';
 
   return (
-    <button
+    <Button
       type={type}
       onClick={onClick}
       disabled={disabled || loading}
@@ -66,7 +68,7 @@ const Button: React.FC<ButtonProps> = ({
       ) : (
         children
       )}
-    </button>
+    </Button>
   );
 };
 
